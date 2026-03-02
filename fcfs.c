@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h>
 
 struct Process {
     char pid[10];
@@ -12,11 +11,15 @@ struct Process {
 int main() {
     int n;
     scanf("%d", &n);
-    
+
     struct Process p[n];
+
+    // Input
     for (int i = 0; i < n; i++) {
         scanf("%s %d %d", p[i].pid, &p[i].arrival, &p[i].burst);
     }
+
+    // Sort by Arrival Time (FCFS)
     for (int i = 0; i < n - 1; i++) {
         for (int j = i + 1; j < n; j++) {
             if (p[i].arrival > p[j].arrival) {
@@ -26,34 +29,39 @@ int main() {
             }
         }
     }
-    
+
     int current_time = 0;
     float total_wt = 0, total_tat = 0;
+
+    // Calculate waiting and turnaround times
     for (int i = 0; i < n; i++) {
+
         if (current_time < p[i].arrival) {
             current_time = p[i].arrival;
         }
-        
+
         p[i].waiting = current_time - p[i].arrival;
         p[i].turnaround = p[i].waiting + p[i].burst;
-        
+
         current_time += p[i].burst;
-        
+
         total_wt += p[i].waiting;
         total_tat += p[i].turnaround;
     }
+
+    // Output
     printf("Waiting Time:\n");
     for (int i = 0; i < n; i++) {
         printf("%s %d\n", p[i].pid, p[i].waiting);
     }
-    
+
     printf("Turnaround Time:\n");
     for (int i = 0; i < n; i++) {
         printf("%s %d\n", p[i].pid, p[i].turnaround);
     }
-    
+
     printf("Average Waiting Time: %.2f\n", total_wt / n);
     printf("Average Turnaround Time: %.2f", total_tat / n);
-    
+
     return 0;
-} is this code correct for this program
+}
